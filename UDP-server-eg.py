@@ -25,7 +25,7 @@ while True:
     logger.info('Received Req Msg length: %s', len(data))
 
     # send back to the client
-    if data == ('studentmarklist' + '\0') and len(data) is 16:
+    if data == ('studentmarklist' + '\0') and len(data) == 16:
         response_msg = '0004' + 'George\0\0\0\0\0\0\0\0\0\0' + '0095' + 'Mikeeeeeeeeeeee\0' + '0100' + 'Kelly\0\0\0\0\0\0\0\0\0\0\0' + '0000' + 'Zong\0\0\0\0\0\0\0\0\0\0\0\0' + '0087'
         sent = s.sendto(response_msg.encode(), addr)
         logger.info('Sent Res Msg: %s', response_msg)
