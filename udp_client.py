@@ -31,6 +31,10 @@ clientSocket.close()
 print(data.decode('utf-8'))
 # print the received message
 n_students = int(data[:4])
+if n_students > 50:
+    print("fuck off")
+    exit(1)
+    
 print("student count:", n_students)
 
 STUDENT_REC_FORMAT = "16s4s"  # char[16] + unsigned long (4 bytes)
@@ -57,4 +61,3 @@ for student in sorted_data:
     print(f"{student[0]}: ({student[1]})")
     pass
 
-# Close the socket
