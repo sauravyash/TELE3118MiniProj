@@ -1,4 +1,4 @@
-from flask import Flask, request
+from flask import Flask, abort, request
 from flask_cors import CORS
 
 database = {}
@@ -14,7 +14,7 @@ def student():
         mark = int(request.form['mark'])
         database[name] = mark
     except:
-        Flask.abort(400)
+        abort(400)
     return database
 
 
@@ -30,4 +30,10 @@ def studentmark(studentName):
     if database[studentName] != None:
         return {"mark": database[studentName]}
     else:
-        Flask.abort(404)
+        abort(404)
+        
+        
+if __name__ == "__main__":
+    # host="127.0.0.1" means localhost only
+    # port=3000 starts the server on port 3000
+    app.run(host="127.0.0.1", port=3000, debug=True)
