@@ -32,6 +32,30 @@ def studentmark(studentName):
     else:
         abort(404)
         
+### EXTRA
+@app.route("/api/student/<studentName>", methods=['PUT'])
+def edit_student(studentName):
+    if studentName not in database:
+        abort(404)
+    try:
+        mark = int(request.form['mark'])
+        database[studentName] = mark
+        print("edited:", studentName, mark)
+    except (KeyError, ValueError) as e:
+        print(e)
+        abort(400)
+
+    database[studentName] = mark
+    return {"name": studentName, "mark": database[studentName]}
+
+@app.route("/api/student/<studentName>", methods=['DELETE'])
+def delete_student(studentName):
+    if studentName not in database:
+        abort(404)
+
+    deleted_mark = database.pop(studentName)
+    return {"name": studentName, "deleted": True, "mark": deleted_mark}
+        
         
 if __name__ == "__main__":
     # host="127.0.0.1" means localhost only

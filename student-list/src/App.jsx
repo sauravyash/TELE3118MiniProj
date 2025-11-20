@@ -11,13 +11,13 @@ function App() {
 
   // For editing
   const [editingName, setEditingName] = useState(null); // which student is being edited (using name as id)
-  const [editValues, setEditValues] = useState({ name: "", mark: "" });
+  const [editValues, setEditValues] = useState({ mark: "" });
 
 
 
   useEffect(() => {
     fetchData();
-  })
+  }, [])
 
   const fetchData = async () => {
     const res = await fetch(`${url}/api/studentlist`)
@@ -56,26 +56,39 @@ function App() {
     fetchData()
   }
 
-  const handleEditClick = (student) => {
+  const handleEditClick = async (student) => {
     setEditingName(student.name);
     setEditValues({ name: student.name, mark: student.mark });
   };
 
-  const handleConfirmClick = () => {
+  const handleConfirmClick = async () => {
+    
+    const data = new FormData();
+    data.append("mark", editValues.mark);
+    const res = await fetch(`${url}/api/student/${editValues.name}`, {
+      method: "PUT",
+      body: data
+    })
+    
+    console.log(res);
     setStudentList((prev) =>
       prev.map((s) =>
         s.name === editingName ? { ...s, name: editValues.name, mark: editValues.mark } : s
       )
     );
     setEditingName(null);
+    fetchData();
   };
 
   const handleCancelEdit = () => {
     setEditingName(null);
   };
 
-  const handleDelete = (student) => {
+  const handleDelete = async (student) => {
     setStudentList((prev) => prev.filter((s) => s.name !== student.name));
+    await fetch(`${url}/api/student/${student.name}`, {
+      method: "DELETE"
+    })
   };
 
   return (
@@ -117,27 +130,17 @@ function App() {
               const isEditing = editingName === student.name;
 
               return (
-                <tr key={student.name}>
+                <tr key={student.name + (new Date().toISOString())}>
                   {isEditing ? (
                     <>
-                      {/* Editable cells */}
-                      <td>
-                        <input
-                          className="input is-small"
-                          type="text"
-                          value={editValues.name}
-                          onChange={(e) =>
-                            setEditValues((prev) => ({ ...prev, name: e.target.value }))
-                          }
-                        />
-                      </td>
+                      <td>{student.name}</td>
                       <td>
                         <input
                           className="input is-small"
                           type="number"
                           value={editValues.mark}
                           onChange={(e) =>
-                            setEditValues((prev) => ({ ...prev, mark: e.target.value }))
+                            setEditValues((prev) => ({ ...prev, name: editingName, mark: e.target.value }))
                           }
                         />
                       </td>
