@@ -58,7 +58,7 @@ function App() {
 
   const handleEditClick = async (student) => {
     setEditingName(student.name);
-    setEditValues({ name: student.name, mark: student.mark });
+    // setEditValues({ name: student.name, mark: student.mark });
   };
 
   const handleConfirmClick = async () => {
@@ -130,7 +130,7 @@ function App() {
               const isEditing = editingName === student.name;
 
               return (
-                <tr key={student.name + (new Date().toISOString())}>
+                <tr key={student.name}>
                   {isEditing ? (
                     <>
                       <td>{student.name}</td>

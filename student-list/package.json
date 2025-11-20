@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "start": "vite",
+    "start-server": "cd .. && python TCPserver.py",
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview"
